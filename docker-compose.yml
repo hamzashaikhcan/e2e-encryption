@@ -1,0 +1,77 @@
+version: '3.3'
+services:
+  ambassador:
+    image: datawire/ambassador:1.10.0
+    ports:
+      - 8080:8080
+    volumes:
+      - ./backend/ambassador:/ambassador/ambassador-config
+    environment:
+      - AMBASSADOR_NO_KUBEWATCH=no_kubewatch
+
+  postgres:
+    build: backend/postgres-dev/
+    container_name: postgres
+    ports:
+      - 5432:5432
+    restart: always
+    volumes:
+      - ./backend/db_data/:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB_LIST: $POSTGRES_DATABASE_LIST
+      POSTGRES_USER: $POSTGRES_USERNAME
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - $MACHINE_ADMINER_PORT:$ADMINER_PORT
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+
+  auth:
+    build: backend/auth/
+    container_name: auth
+    command: sh ./docker-entrypoint.sh
+    restart: always
+    ports:
+      - $AUTH_PORT:$AUTH_PORT
+    depends_on:
+      - postgres
+    environment:
+      PORT: $AUTH_PORT
+      POSTGRES_USERNAME: $POSTGRES_USERNAME
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_HOST: postgres
+      POSTGRES_DATABASE: $AUTH_DB
+      WEB_ORIGIN: $WEB_ORIGIN
+      KEY_SECRET_TOKEN: $KEY_SECRET_TOKEN
+
+  todo:
+    build: backend/todo/
+    container_name: todo
+    command: sh ./docker-entrypoint.sh
+    restart: always
+    ports:
+      - $TODO_PORT:$TODO_PORT
+    depends_on:
+      - postgres
+    environment:
+      PORT: $TODO_PORT
+      POSTGRES_USERNAME: $POSTGRES_USERNAME
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_HOST: postgres
+      POSTGRES_DATABASE: $TODO_DB
+      WEB_ORIGIN: $WEB_ORIGIN
+
+  Observer:
+    image: imroz/docker-live-changes:levvy
+    container_name: observer
+    command: sh ./app/docker-entrypoint.sh
+    restart: always
+    volumes:
+      - ./backend:/app/backend
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 5001:5001

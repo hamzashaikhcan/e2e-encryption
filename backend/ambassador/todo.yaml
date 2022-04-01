@@ -1,0 +1,16 @@
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+name: todo_tasks
+prefix: /api/todos/
+rewrite: ''
+service: todo:4003
+bypass_auth: true
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+name: todo_subtasks
+prefix: /api/subtasks/
+rewrite: ''
+service: todo:4003
+bypass_auth: true

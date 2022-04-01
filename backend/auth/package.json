@@ -1,0 +1,25 @@
+{
+	"name": "auth",
+	"version": "1.0.0",
+	"description": "",
+	"main": "app.js",
+	"scripts": {
+		"start": "node app.js",
+		"migrate": "knex migrate:latest",
+		"seed": "knex seed:run",
+		"test": "jest --detectOpenHandles --coverage --collectCoverage",
+		"lint": "eslint '**/*.js'"
+	},
+	"author": "Hamza Zahid",
+	"license": "ISC",
+	"dependencies": {
+		"body-parser": "^1.19.2",
+		"cors": "^2.8.5",
+		"express": "^4.17.3",
+		"jest": "^27.5.1",
+		"openpgp": "^5.2.1",
+		"knex": "^1.0.3",
+		"objection": "^3.0.1",
+		"pg": "^8.7.3"
+	}
+}

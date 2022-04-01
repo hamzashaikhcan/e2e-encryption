@@ -1,0 +1,35 @@
+---
+apiVersion: getambassador.io/v2
+kind: Module
+name: ambassador
+config:
+  diagnostics:
+    enabled: true
+  cors:
+    origins: '*'
+    methods:
+      - POST
+      - GET
+      - OPTIONS
+      - PATCH
+      - DELETE
+      - PUT
+    headers:
+      - Access-Control-Allow-Origin
+      - Content-Type
+      - Authorization
+      - Sentry-Trace
+      - user
+    exposed_headers: '*'
+    credentials: true
+
+---
+apiVersion: getambassador.io/v2
+kind: AuthService
+name: auth_verify
+auth_service: auth:4000
+path_prefix: '/api/rbac/check'
+allowed_request_headers:
+  - Origin
+allowed_authorization_headers:
+  - 'user'
