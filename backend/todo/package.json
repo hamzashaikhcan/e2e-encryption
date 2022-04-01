@@ -1,0 +1,28 @@
+{
+	"name": "end-to-end_encryption",
+	"version": "1.0.0",
+	"description": "PGP Keys demo",
+	"main": "app.js",
+	"scripts": {
+		"serve": "nodemon app.js",
+		"start": "node app.js",
+		"makemigrate": "knex --knexfile=./Database/knexFile.js migrate:make",
+		"migrate": "knex --knexfile=./Database/knexFile.js migrate:latest",
+		"migratedown": "knex --knexfile=./Database/knexFile.js  migrate:down",
+		"seed": "knex --knexfile=./Database/knexFile.js seed:run",
+		"test": "jest --detectOpenHandles --coverage --collectCoverage"
+	},
+	"author": "Hamza Zahid",
+	"license": "ISC",
+	"dependencies": {
+		"cors": "^2.8.5",
+		"express": "^4.17.2",
+		"jest": "^27.5.1",
+		"knex": "^1.0.3",
+		"objection": "^3.0.1",
+		"pg": "^8.7.3"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.15"
+	}
+}
