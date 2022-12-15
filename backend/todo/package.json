@@ -16,7 +16,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"cors": "^2.8.5",
-		"express": "^4.17.2",
+		"express": "^4.17.3",
 		"jest": "^27.5.1",
 		"knex": "^1.0.3",
 		"objection": "^3.0.1",
